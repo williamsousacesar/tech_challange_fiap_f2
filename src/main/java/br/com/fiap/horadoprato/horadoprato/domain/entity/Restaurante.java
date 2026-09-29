@@ -23,7 +23,7 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String nomeRestaurante;
 
     @Column(nullable = false)
