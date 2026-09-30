@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-@Entity
 @Table(name = "tipo_usuario")
 @Data
 @NoArgsConstructor
@@ -19,8 +18,8 @@ import java.time.temporal.ChronoUnit;
 @Builder
 public class TipoUsuario {
 
-    @Id
-    private String tipoUsuario;
+    @Column(nullable = false)
+    private String tpUsuario;
 
     @Column(nullable = false)
     private String descricaoTipoUsuario;
