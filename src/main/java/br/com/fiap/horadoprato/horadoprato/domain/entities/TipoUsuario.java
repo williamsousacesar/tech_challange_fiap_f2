@@ -1,4 +1,4 @@
-package br.com.fiap.horadoprato.horadoprato.domain.entity;
+package br.com.fiap.horadoprato.horadoprato.domain.entities;
 
 
 import jakarta.persistence.*;
@@ -8,9 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
+@Entity
 @Table(name = "tipo_usuario")
 @Data
 @NoArgsConstructor
@@ -18,7 +16,11 @@ import java.time.temporal.ChronoUnit;
 @Builder
 public class TipoUsuario {
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String tpUsuario;
 
     @Column(nullable = false)

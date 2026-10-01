@@ -1,4 +1,4 @@
-package br.com.fiap.horadoprato.horadoprato.domain.entity;
+package br.com.fiap.horadoprato.horadoprato.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,32 +8,35 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 
 @Entity
-@Table(name = "restaurante")
+@Table(name = "item_cardapio")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurante {
+public class ItemCardapio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Column(name = "id_item_cardapio")
+    private String idItemCardapio;
 
-    @Column(nullable = true)
-    private String nomeRestaurante;
+    @Column(name = "nome_item_cardapio", nullable = false)
+    private String nomeItemCardapio;
 
-    @Column(nullable = false)
-    private String endereco;
+    @Column(name = "descricao_item", nullable = false)
+    private String descricaoItem;
 
-    @Column(nullable = false)
-    private String tipoCozinha;
+    @Column(name = "preco", nullable = false)
+    private Double preco;
 
-    @Column(nullable = false)
-    private UUID donoRestaurante;
+    @Column(name = "disponibilidade_consumo", nullable = false)
+    private String disponibilidadeConsumo;
+
+    @Column(name = "foto_prato", nullable = true)
+    private byte[] fotoPrato;
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
@@ -45,4 +48,5 @@ public class Restaurante {
     public void atualizarDataAlteracao() {
         this.dataAlteracao = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
     }
+
 }
