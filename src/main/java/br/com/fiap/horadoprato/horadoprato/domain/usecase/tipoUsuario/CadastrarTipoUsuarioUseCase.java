@@ -22,7 +22,7 @@ public class CadastrarTipoUsuarioUseCase {
         final TipoUsuario tipoUsuarioExistente = iTipoUsuarioGateway.buscarPorTpUsuario(novoTipoUsuarioDTO.tpUsuario());
 
         if (tipoUsuarioExistente != null) {
-            throw new TipoUsuarioJaExisteException(novoTipoUsuarioDTO.tpUsuario());
+            throw new TipoUsuarioJaExisteException("Tipo de usuario '" + novoTipoUsuarioDTO.tpUsuario() + "' ja existe");
         }
 
         final TipoUsuario novoTipoUsuario = TipoUsuario.builder().tpUsuario(novoTipoUsuarioDTO.tpUsuario()).descricaoTipoUsuario(novoTipoUsuarioDTO.descricaoTipoUsuario()).build();
