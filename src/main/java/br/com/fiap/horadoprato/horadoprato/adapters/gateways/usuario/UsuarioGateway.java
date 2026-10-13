@@ -5,16 +5,16 @@ import br.com.fiap.horadoprato.horadoprato.domain.entities.Usuario;
 import br.com.fiap.horadoprato.horadoprato.dto.usuario.UsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioDataStorageSource;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioGateway implements IUsuarioGateway {
 
-    @Autowired
-    private IUsuarioDataStorageSource dataStorageSource;
+    private final IUsuarioDataStorageSource dataStorageSource;
 
     @Override
     public Usuario buscarPorId(String id) {

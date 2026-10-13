@@ -1,22 +1,21 @@
 package br.com.fiap.horadoprato.horadoprato.adapters.persistence;
 
-import br.com.fiap.horadoprato.horadoprato.domain.entities.Usuario;
+import br.com.fiap.horadoprato.horadoprato.adapters.persistence.entities.UsuarioEntity;
 import br.com.fiap.horadoprato.horadoprato.dto.usuario.UsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioDataStorageSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioDataStorage implements IUsuarioDataStorageSource {
 
-    @Autowired
-    private UsuarioRepository repository;
+    private final UsuarioRepository repository;
 
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+    private final TipoUsuarioRepository tipoUsuarioRepository;
 
     @Override
     public UsuarioDTO buscarPorId(String id) {
@@ -35,7 +34,7 @@ public class UsuarioDataStorage implements IUsuarioDataStorageSource {
     @Override
     @Transactional
     public UsuarioDTO alterarTipoUsuario(String usuarioId, Long tipoUsuarioId) {
-        Usuario usuario = repository.findById(usuarioId).orElse(null);
+        UsuarioEntity usuario = repository.findById(usuarioId).orElse(null);
         if (usuario == null) {
             return null;
         }
@@ -48,7 +47,7 @@ public class UsuarioDataStorage implements IUsuarioDataStorageSource {
         return repository.existsByTipoUsuarioId(tipoUsuarioId);
     }
 
-    private static UsuarioDTO toDTO(Usuario entity) {
+    private static UsuarioDTO toDTO(UsuarioEntity entity) {
         return new UsuarioDTO(
                 entity.getId(),
                 entity.getLogin(),

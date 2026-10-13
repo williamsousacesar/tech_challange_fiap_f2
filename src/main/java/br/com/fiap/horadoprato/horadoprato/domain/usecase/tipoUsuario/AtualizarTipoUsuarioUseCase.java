@@ -1,7 +1,6 @@
 package br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario;
 
 import br.com.fiap.horadoprato.horadoprato.domain.entities.TipoUsuario;
-import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.NovoTipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioJaExisteException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.ITipoUsuarioGateway;
@@ -18,7 +17,7 @@ public class AtualizarTipoUsuarioUseCase {
         return new AtualizarTipoUsuarioUseCase(iTipoUsuarioGateway);
     }
 
-    public TipoUsuario run(Long id, NovoTipoUsuarioDTO dadosAtualizados)
+    public TipoUsuario run(Long id, String tpUsuario, String descricaoTipoUsuario)
             throws TipoUsuarioNaoEncontradoException, TipoUsuarioJaExisteException {
 
         final TipoUsuario tipoUsuario = iTipoUsuarioGateway.buscarPorId(id);
@@ -27,14 +26,14 @@ public class AtualizarTipoUsuarioUseCase {
             throw new TipoUsuarioNaoEncontradoException("Tipo de usuario com id " + id + " nao encontrado");
         }
 
-        final TipoUsuario tipoComMesmoNome = iTipoUsuarioGateway.buscarPorTpUsuario(dadosAtualizados.tpUsuario());
+        final TipoUsuario tipoComMesmoNome = iTipoUsuarioGateway.buscarPorTpUsuario(tpUsuario);
 
         if (tipoComMesmoNome != null && !tipoComMesmoNome.getId().equals(id)) {
-            throw new TipoUsuarioJaExisteException("Tipo de usuario '" + dadosAtualizados.tpUsuario() + "' ja existe");
+            throw new TipoUsuarioJaExisteException("Tipo de usuario '" + tpUsuario + "' ja existe");
         }
 
-        tipoUsuario.setTpUsuario(dadosAtualizados.tpUsuario());
-        tipoUsuario.setDescricaoTipoUsuario(dadosAtualizados.descricaoTipoUsuario());
+        tipoUsuario.setTpUsuario(tpUsuario);
+        tipoUsuario.setDescricaoTipoUsuario(descricaoTipoUsuario);
 
         return iTipoUsuarioGateway.atualizar(tipoUsuario);
     }

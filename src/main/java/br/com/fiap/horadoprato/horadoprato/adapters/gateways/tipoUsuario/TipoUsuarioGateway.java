@@ -5,16 +5,16 @@ import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.NovoTipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.IDataStorageSource;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.ITipoUsuarioGateway;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TipoUsuarioGateway implements ITipoUsuarioGateway {
 
-    @Autowired
-    private IDataStorageSource dataStorageSource;
+    private final IDataStorageSource dataStorageSource;
 
     public TipoUsuario incluir(TipoUsuario tipoUsuario) {
 

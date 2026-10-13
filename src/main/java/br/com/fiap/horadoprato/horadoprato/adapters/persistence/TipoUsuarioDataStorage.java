@@ -1,34 +1,34 @@
 package br.com.fiap.horadoprato.horadoprato.adapters.persistence;
 
-import br.com.fiap.horadoprato.horadoprato.domain.entities.TipoUsuario;
+import br.com.fiap.horadoprato.horadoprato.adapters.persistence.entities.TipoUsuarioEntity;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.NovoTipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.IDataStorageSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TipoUsuarioDataStorage implements IDataStorageSource {
 
-    @Autowired
-    private TipoUsuarioRepository repository;
+    private final TipoUsuarioRepository repository;
 
     @Override
     public TipoUsuarioDTO incluirTipoUsuario(NovoTipoUsuarioDTO novoTipoUsuarioDTO) {
-        TipoUsuario entity = TipoUsuario.builder()
+        TipoUsuarioEntity entity = TipoUsuarioEntity.builder()
                 .tpUsuario(novoTipoUsuarioDTO.tpUsuario())
                 .descricaoTipoUsuario(novoTipoUsuarioDTO.descricaoTipoUsuario())
                 .build();
 
-        TipoUsuario saved = repository.save(entity);
+        TipoUsuarioEntity saved = repository.save(entity);
         return toDTO(saved);
     }
 
     @Override
     public TipoUsuarioDTO buscarPorTpUsuario(String tpUsuario) {
-        TipoUsuario entity = repository.findByTpUsuario(tpUsuario);
+        TipoUsuarioEntity entity = repository.findByTpUsuario(tpUsuario);
         if (entity == null) {
             return null;
         }
@@ -51,7 +51,7 @@ public class TipoUsuarioDataStorage implements IDataStorageSource {
 
     @Override
     public TipoUsuarioDTO atualizarTipoUsuario(Long id, NovoTipoUsuarioDTO tipoUsuarioDTO) {
-        TipoUsuario entity = repository.findById(id).orElse(null);
+        TipoUsuarioEntity entity = repository.findById(id).orElse(null);
         if (entity == null) {
             return null;
         }
@@ -65,7 +65,7 @@ public class TipoUsuarioDataStorage implements IDataStorageSource {
         repository.deleteById(id);
     }
 
-    static TipoUsuarioDTO toDTO(TipoUsuario entity) {
+    static TipoUsuarioDTO toDTO(TipoUsuarioEntity entity) {
         return new TipoUsuarioDTO(entity.getId(), entity.getTpUsuario(), entity.getDescricaoTipoUsuario());
     }
 }
