@@ -45,7 +45,7 @@ public class TipoUsuarioController {
 
     private final ExcluirTipoUsuarioUseCase excluirTipoUsuarioUseCase;
 
-    @PostMapping({"", "/cadastrar"})
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Cadastra um tipo de usuario")
     @ApiResponse(responseCode = "201", description = "Tipo de usuario cadastrado")

@@ -1,5 +1,10 @@
 package br.com.fiap.horadoprato.horadoprato.config;
 
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.AtualizarRestauranteUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.BuscarRestaurantePorIdUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.CadastrarRestauranteUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.ExcluirRestauranteUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.ListarRestaurantesUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.AtualizarTipoUsuarioUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.BuscarTipoUsuarioPorIdUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.CadastrarTipoUsuarioUseCase;
@@ -8,6 +13,7 @@ import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.ListarTipo
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.AlterarTipoDoUsuarioUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.BuscarUsuarioPorIdUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.ListarUsuariosUseCase;
+import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.ITipoUsuarioGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
 import org.springframework.context.annotation.Bean;
@@ -60,5 +66,32 @@ public class UseCaseConfig {
     public AlterarTipoDoUsuarioUseCase alterarTipoDoUsuarioUseCase(IUsuarioGateway usuarioGateway,
                                                                    ITipoUsuarioGateway tipoUsuarioGateway) {
         return AlterarTipoDoUsuarioUseCase.create(usuarioGateway, tipoUsuarioGateway);
+    }
+
+    @Bean
+    public CadastrarRestauranteUseCase cadastrarRestauranteUseCase(IRestauranteGateway restauranteGateway,
+                                                                   IUsuarioGateway usuarioGateway) {
+        return CadastrarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
+    }
+
+    @Bean
+    public ListarRestaurantesUseCase listarRestaurantesUseCase(IRestauranteGateway restauranteGateway) {
+        return ListarRestaurantesUseCase.create(restauranteGateway);
+    }
+
+    @Bean
+    public BuscarRestaurantePorIdUseCase buscarRestaurantePorIdUseCase(IRestauranteGateway restauranteGateway) {
+        return BuscarRestaurantePorIdUseCase.create(restauranteGateway);
+    }
+
+    @Bean
+    public AtualizarRestauranteUseCase atualizarRestauranteUseCase(IRestauranteGateway restauranteGateway,
+                                                                   IUsuarioGateway usuarioGateway) {
+        return AtualizarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
+    }
+
+    @Bean
+    public ExcluirRestauranteUseCase excluirRestauranteUseCase(IRestauranteGateway restauranteGateway) {
+        return ExcluirRestauranteUseCase.create(restauranteGateway);
     }
 }

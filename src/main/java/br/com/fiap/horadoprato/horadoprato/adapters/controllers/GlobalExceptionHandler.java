@@ -1,5 +1,6 @@
 package br.com.fiap.horadoprato.horadoprato.adapters.controllers;
 
+import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioEmUsoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioJaExisteException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioNaoEncontradoException;
@@ -16,7 +17,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({TipoUsuarioNaoEncontradoException.class, UsuarioNaoEncontradoException.class})
+    @ExceptionHandler({TipoUsuarioNaoEncontradoException.class, UsuarioNaoEncontradoException.class, RestauranteNaoEncontradoException.class})
     public ProblemDetail tratarNaoEncontrado(RuntimeException e) {
         return criarProblema(HttpStatus.NOT_FOUND, "Recurso nao encontrado", e.getMessage());
     }
