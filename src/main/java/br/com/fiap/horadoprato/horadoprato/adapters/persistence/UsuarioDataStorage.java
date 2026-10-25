@@ -4,10 +4,10 @@ import br.com.fiap.horadoprato.horadoprato.adapters.persistence.entities.Usuario
 import br.com.fiap.horadoprato.horadoprato.dto.usuario.UsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioDataStorageSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +25,10 @@ public class UsuarioDataStorage implements IUsuarioDataStorageSource {
     }
 
     @Override
-    public List<UsuarioDTO> listarTodos() {
-        return repository.findAll().stream()
-                .map(UsuarioDataStorage::toDTO)
-                .toList();
+    @Transactional(readOnly = true)
+    public Page<UsuarioDTO> listarTodos(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(UsuarioDataStorage::toDTO);
     }
 
     @Override

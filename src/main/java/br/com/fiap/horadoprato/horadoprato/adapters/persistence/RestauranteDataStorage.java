@@ -6,10 +6,11 @@ import br.com.fiap.horadoprato.horadoprato.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.horadoprato.horadoprato.dto.restaurante.RestauranteDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteDataStorageSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,10 +50,15 @@ public class RestauranteDataStorage implements IRestauranteDataStorageSource {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RestauranteDTO> listarTodos() {
-        return repository.findAll().stream()
-                .map(RestauranteDataStorage::toDTO)
-                .toList();
+    public Page<RestauranteDTO> listarTodos(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(RestauranteDataStorage::toDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existeRestauranteComDono(String donoId) {
+        return repository.existsByDonoId(donoId);
     }
 
     @Override

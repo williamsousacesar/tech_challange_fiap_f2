@@ -6,9 +6,9 @@ import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.IDataStorageSource;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.ITipoUsuarioGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +36,9 @@ public class TipoUsuarioGateway implements ITipoUsuarioGateway {
     }
 
     @Override
-    public List<TipoUsuario> listarTodos() {
-        return this.dataStorageSource.listarTodos().stream()
-                .map(TipoUsuarioGateway::toEntity)
-                .toList();
+    public Page<TipoUsuario> listarTodos(Pageable pageable) {
+        return this.dataStorageSource.listarTodos(pageable)
+                .map(TipoUsuarioGateway::toEntity);
     }
 
     @Override

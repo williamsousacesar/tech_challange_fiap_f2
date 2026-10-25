@@ -2,7 +2,8 @@ package br.com.fiap.horadoprato.horadoprato.interfaces.restaurante;
 
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Restaurante;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IRestauranteGateway {
 
@@ -10,7 +11,9 @@ public interface IRestauranteGateway {
 
     Restaurante buscarPorId(String id);
 
-    List<Restaurante> listarTodos();
+    Page<Restaurante> listarTodos(Pageable pageable);
+
+    boolean existeRestauranteComDono(String donoId);
 
     Restaurante atualizar(Restaurante restaurante);
 

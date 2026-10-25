@@ -6,9 +6,9 @@ import br.com.fiap.horadoprato.horadoprato.dto.restaurante.RestauranteDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteDataStorageSource;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +37,14 @@ public class RestauranteGateway implements IRestauranteGateway {
     }
 
     @Override
-    public List<Restaurante> listarTodos() {
-        return this.dataStorageSource.listarTodos().stream()
-                .map(RestauranteGateway::toEntity)
-                .toList();
+    public Page<Restaurante> listarTodos(Pageable pageable) {
+        return this.dataStorageSource.listarTodos(pageable)
+                .map(RestauranteGateway::toEntity);
+    }
+
+    @Override
+    public boolean existeRestauranteComDono(String donoId) {
+        return this.dataStorageSource.existeRestauranteComDono(donoId);
     }
 
     @Override
