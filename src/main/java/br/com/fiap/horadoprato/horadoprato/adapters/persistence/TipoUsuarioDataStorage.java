@@ -5,9 +5,10 @@ import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.NovoTipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.IDataStorageSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,10 +44,10 @@ public class TipoUsuarioDataStorage implements IDataStorageSource {
     }
 
     @Override
-    public List<TipoUsuarioDTO> listarTodos() {
-        return repository.findAll().stream()
-                .map(TipoUsuarioDataStorage::toDTO)
-                .toList();
+    @Transactional(readOnly = true)
+    public Page<TipoUsuarioDTO> listarTodos(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(TipoUsuarioDataStorage::toDTO);
     }
 
     @Override

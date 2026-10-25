@@ -13,15 +13,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -38,8 +41,11 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Lista todos os usuarios com seu tipo")
     @ApiResponse(responseCode = "200", description = "Lista de usuarios")
-    public List<UsuarioDTO> listar() {
-        return UsuarioPresenter.ToDTO(listarUsuariosUseCase.run());
+    public Page<UsuarioDTO> listar(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "login"));
+        return listarUsuariosUseCase.run(pageable)
+                .map(UsuarioPresenter::ToDTO);
     }
 
     @GetMapping("/{id}")
@@ -55,6 +61,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "200", description = "Tipo do usuario alterado")
     @ApiResponse(responseCode = "400", description = "Dados invalidos", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "404", description = "Usuario ou tipo de usuario nao encontrado", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    @ApiResponse(responseCode = "409", description = "Usuario dono de restaurante nao pode ter o tipo alterado", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public UsuarioDTO alterarTipo(@PathVariable String id, @Valid @RequestBody AlterarTipoUsuarioDTO alterarTipoUsuarioDTO) {
         return UsuarioPresenter.ToDTO(alterarTipoDoUsuarioUseCase.run(id, alterarTipoUsuarioDTO.tipoUsuarioId()));
     }

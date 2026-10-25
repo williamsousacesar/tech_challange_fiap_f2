@@ -2,13 +2,14 @@ package br.com.fiap.horadoprato.horadoprato.interfaces.usuario;
 
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Usuario;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IUsuarioGateway {
 
     Usuario buscarPorId(String id);
 
-    List<Usuario> listarTodos();
+    Page<Usuario> listarTodos(Pageable pageable);
 
     Usuario alterarTipoUsuario(String usuarioId, Long tipoUsuarioId);
 

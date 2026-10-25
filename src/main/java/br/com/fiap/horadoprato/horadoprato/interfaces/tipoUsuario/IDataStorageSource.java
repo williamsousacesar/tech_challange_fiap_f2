@@ -3,7 +3,8 @@ package br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.NovoTipoUsuarioDTO;
 import br.com.fiap.horadoprato.horadoprato.dto.tipoUsuario.TipoUsuarioDTO;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IDataStorageSource {
 
@@ -13,7 +14,7 @@ public interface IDataStorageSource {
 
     TipoUsuarioDTO buscarPorId(Long id);
 
-    List<TipoUsuarioDTO> listarTodos();
+    Page<TipoUsuarioDTO> listarTodos(Pageable pageable);
 
     TipoUsuarioDTO atualizarTipoUsuario(Long id, NovoTipoUsuarioDTO tipoUsuarioDTO);
 

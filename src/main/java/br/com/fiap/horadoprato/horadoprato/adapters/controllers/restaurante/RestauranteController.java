@@ -15,6 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +28,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/restaurantes")
@@ -51,6 +54,7 @@ public class RestauranteController {
     @ApiResponse(responseCode = "201", description = "Restaurante cadastrado")
     @ApiResponse(responseCode = "400", description = "Dados invalidos", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "404", description = "Usuario dono nao encontrado", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    @ApiResponse(responseCode = "409", description = "Usuario informado nao possui perfil de dono", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public RestauranteDTO cadastrar(@Valid @RequestBody NovoRestauranteDTO novoRestauranteDTO) {
         var restaurante = cadastrarRestauranteUseCase.run(
                 novoRestauranteDTO.nomeRestaurante(),
@@ -65,8 +69,11 @@ public class RestauranteController {
     @GetMapping
     @Operation(summary = "Lista todos os restaurantes")
     @ApiResponse(responseCode = "200", description = "Lista de restaurantes")
-    public List<RestauranteDTO> listar() {
-        return RestaurantePresenter.ToDTO(listarRestaurantesUseCase.run());
+    public Page<RestauranteDTO> listar(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "nomeRestaurante"));
+        return listarRestaurantesUseCase.run(pageable)
+                .map(RestaurantePresenter::ToDTO);
     }
 
     @GetMapping("/{id}")
@@ -82,6 +89,7 @@ public class RestauranteController {
     @ApiResponse(responseCode = "200", description = "Restaurante atualizado")
     @ApiResponse(responseCode = "400", description = "Dados invalidos", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "404", description = "Restaurante ou usuario dono nao encontrado", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    @ApiResponse(responseCode = "409", description = "Usuario informado nao possui perfil de dono", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public RestauranteDTO atualizar(@PathVariable String id, @Valid @RequestBody NovoRestauranteDTO restauranteDTO) {
         var restaurante = atualizarRestauranteUseCase.run(
                 id,
