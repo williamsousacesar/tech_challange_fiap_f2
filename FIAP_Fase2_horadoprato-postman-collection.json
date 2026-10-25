@@ -1,0 +1,607 @@
+{
+  "info": {
+    "name": "Hora do Prato API",
+    "description": "Collection com todos os endpoints da aplicação de restaurantes, usuários e cardápio.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "b9f7d1a2-59c8-4d4a-9a0a-fd7b255d55f2"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "tipoUsuarioId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "usuarioId",
+      "value": "550e8400-e29b-41d4-a716-446655440000",
+      "type": "string"
+    },
+    {
+      "key": "restauranteId",
+      "value": "550e8400-e29b-41d4-a716-446655440010",
+      "type": "string"
+    },
+    {
+      "key": "itemCardapioId",
+      "value": "550e8400-e29b-41d4-a716-446655440020",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Tipo de Usuário",
+      "item": [
+        {
+          "name": "Cadastrar tipo de usuário",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tpUsuario\": \"DONO_RESTAURANTE\",\n  \"descricaoTipoUsuario\": \"Dono de Restaurante\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tipo-usuario",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "tipo-usuario"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar tipos de usuário",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tipo-usuario?page=0&size=10",
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "tipo-usuario"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar tipo de usuário por id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tipo-usuario/{{tipoUsuarioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "tipo-usuario",
+                "{{tipoUsuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar tipo de usuário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tpUsuario\": \"DONO_RESTAURANTE\",\n  \"descricaoTipoUsuario\": \"Perfil de dono do restaurante\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tipo-usuario/{{tipoUsuarioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "tipo-usuario",
+                "{{tipoUsuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir tipo de usuário",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tipo-usuario/{{tipoUsuarioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "tipo-usuario",
+                "{{tipoUsuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuário",
+      "item": [
+        {
+          "name": "Listar usuários",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios?page=0&size=10",
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar usuário por id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Alterar tipo do usuário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoUsuarioId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}/tipo",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "usuarios",
+                "{{usuarioId}}",
+                "tipo"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Restaurante",
+      "item": [
+        {
+          "name": "Cadastrar restaurante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeRestaurante\": \"Cantina Italiana\",\n  \"endereco\": \"Rua das Flores, 123\",\n  \"tipoCozinha\": \"Italiana\",\n  \"horarioFuncionamento\": \"Segunda a Sexta, 10h às 22h\",\n  \"donoId\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurantes",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "restaurantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar restaurantes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurantes?page=0&size=10",
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "restaurantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar restaurante por id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurantes/{{restauranteId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "restaurantes",
+                "{{restauranteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar restaurante",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeRestaurante\": \"Cantina Italiana Atualizada\",\n  \"endereco\": \"Rua das Flores, 456\",\n  \"tipoCozinha\": \"Italiana\",\n  \"horarioFuncionamento\": \"Segunda a Domingo, 11h às 23h\",\n  \"donoId\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurantes/{{restauranteId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "restaurantes",
+                "{{restauranteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir restaurante",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/restaurantes/{{restauranteId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "restaurantes",
+                "{{restauranteId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Item do Cardápio",
+      "item": [
+        {
+          "name": "Cadastrar item do cardápio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeItemCardapio\": \"Pizza Margherita\",\n  \"descricaoItem\": \"Pizza com molho de tomate, mussarela e manjericão\",\n  \"preco\": 59.90,\n  \"apenasNoLocal\": false,\n  \"caminhoFoto\": \"/imagens/pizza-margherita.jpg\",\n  \"restauranteId\": \"{{restauranteId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/itens-cardapio",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "itens-cardapio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar itens do cardápio por restaurante",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/itens-cardapio/restaurante/{{restauranteId}}?page=0&size=10",
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "itens-cardapio",
+                "restaurante",
+                "{{restauranteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar item do cardápio por id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/itens-cardapio/{{itemCardapioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "itens-cardapio",
+                "{{itemCardapioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar item do cardápio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeItemCardapio\": \"Pizza Margherita Especial\",\n  \"descricaoItem\": \"Pizza com molho de tomate, mussarela, manjericão e alecrim\",\n  \"preco\": 69.90,\n  \"apenasNoLocal\": true,\n  \"caminhoFoto\": \"/imagens/pizza-margherita-especial.jpg\",\n  \"restauranteId\": \"{{restauranteId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/itens-cardapio/{{itemCardapioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "itens-cardapio",
+                "{{itemCardapioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir item do cardápio",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/itens-cardapio/{{itemCardapioId}}",
+              "query": [],
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "itens-cardapio",
+                "{{itemCardapioId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
