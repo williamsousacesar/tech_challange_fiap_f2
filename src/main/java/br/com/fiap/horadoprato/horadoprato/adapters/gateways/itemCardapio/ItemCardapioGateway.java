@@ -62,6 +62,11 @@ public class ItemCardapioGateway implements IItemCardapioGateway {
         this.dataStorageSource.excluirItemCardapio(id);
     }
 
+    @Override
+    public boolean existeItemComRestaurante(String restauranteId) {
+        return this.dataStorageSource.existeItemComRestaurante(restauranteId);
+    }
+
     public static ItemCardapio toEntity(ItemCardapioDTO itemCardapioDTO) {
         if (itemCardapioDTO == null) {
             return null;

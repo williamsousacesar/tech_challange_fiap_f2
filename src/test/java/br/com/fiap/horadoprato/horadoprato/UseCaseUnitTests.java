@@ -23,6 +23,7 @@ import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.AlterarTipoDoU
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.BuscarUsuarioPorIdUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.ListarUsuariosUseCase;
 import br.com.fiap.horadoprato.horadoprato.exceptions.ItemCardapioNaoEncontradoException;
+import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteComItensCardapioException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioEmUsoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.TipoUsuarioJaExisteException;
@@ -49,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -373,9 +375,11 @@ class UseCaseUnitTests {
     @Test
     void excluirRestauranteUseCase_deveExcluirQuandoExiste() {
         IRestauranteGateway gateway = mock(IRestauranteGateway.class);
-        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(gateway);
+        IItemCardapioGateway itemGateway = mock(IItemCardapioGateway.class);
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(gateway, itemGateway);
 
         when(gateway.buscarPorId("r1")).thenReturn(restaurante("r1", usuario("u1", tipoUsuario(1L, "DONO_RESTAURANTE", "Dono"))));
+        when(itemGateway.existeItemComRestaurante("r1")).thenReturn(false);
 
         assertDoesNotThrow(() -> useCase.run("r1"));
         verify(gateway).excluir("r1");
@@ -384,11 +388,25 @@ class UseCaseUnitTests {
     @Test
     void excluirRestauranteUseCase_deveLancarQuandoNaoExiste() {
         IRestauranteGateway gateway = mock(IRestauranteGateway.class);
-        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(gateway);
+        IItemCardapioGateway itemGateway = mock(IItemCardapioGateway.class);
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(gateway, itemGateway);
 
         when(gateway.buscarPorId("r9")).thenReturn(null);
 
         assertThrows(RestauranteNaoEncontradoException.class, () -> useCase.run("r9"));
+    }
+
+    @Test
+    void excluirRestauranteUseCase_deveLancarQuandoPossuiItensNoCardapio() {
+        IRestauranteGateway gateway = mock(IRestauranteGateway.class);
+        IItemCardapioGateway itemGateway = mock(IItemCardapioGateway.class);
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(gateway, itemGateway);
+
+        when(gateway.buscarPorId("r1")).thenReturn(restaurante("r1", usuario("u1", tipoUsuario(1L, "DONO_RESTAURANTE", "Dono"))));
+        when(itemGateway.existeItemComRestaurante("r1")).thenReturn(true);
+
+        assertThrows(RestauranteComItensCardapioException.class, () -> useCase.run("r1"));
+        verify(gateway, never()).excluir("r1");
     }
 
     @Test

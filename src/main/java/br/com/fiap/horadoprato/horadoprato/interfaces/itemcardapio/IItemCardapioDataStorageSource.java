@@ -17,4 +17,6 @@ public interface IItemCardapioDataStorageSource {
     ItemCardapioDTO atualizarItemCardapio(String id, NovoItemCardapioDTO itemCardapioDTO);
 
     void excluirItemCardapio(String id);
+
+    boolean existeItemComRestaurante(String restauranteId);
 }
