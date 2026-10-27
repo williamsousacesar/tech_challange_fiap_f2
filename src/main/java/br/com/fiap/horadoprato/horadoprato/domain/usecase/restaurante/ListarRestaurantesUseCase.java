@@ -3,7 +3,8 @@ package br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante;
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Restaurante;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class ListarRestaurantesUseCase {
 
@@ -17,7 +18,7 @@ public class ListarRestaurantesUseCase {
         return new ListarRestaurantesUseCase(iRestauranteGateway);
     }
 
-    public List<Restaurante> run() {
-        return iRestauranteGateway.listarTodos();
+    public Page<Restaurante> run(Pageable pageable) {
+        return iRestauranteGateway.listarTodos(pageable);
     }
 }

@@ -5,6 +5,11 @@ import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.BuscarRest
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.CadastrarRestauranteUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.ExcluirRestauranteUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante.ListarRestaurantesUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.itemCardapio.AtualizarItemCardapioUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.itemCardapio.BuscarItemCardapioPorIdUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.itemCardapio.CadastrarItemCardapioUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.itemCardapio.ExcluirItemCardapioUseCase;
+import br.com.fiap.horadoprato.horadoprato.domain.usecase.itemCardapio.ListarItensCardapioUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.AtualizarTipoUsuarioUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.BuscarTipoUsuarioPorIdUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.CadastrarTipoUsuarioUseCase;
@@ -13,6 +18,7 @@ import br.com.fiap.horadoprato.horadoprato.domain.usecase.tipoUsuario.ListarTipo
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.AlterarTipoDoUsuarioUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.BuscarUsuarioPorIdUseCase;
 import br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario.ListarUsuariosUseCase;
+import br.com.fiap.horadoprato.horadoprato.interfaces.itemCardapio.IItemCardapioGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario.ITipoUsuarioGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
@@ -64,8 +70,9 @@ public class UseCaseConfig {
 
     @Bean
     public AlterarTipoDoUsuarioUseCase alterarTipoDoUsuarioUseCase(IUsuarioGateway usuarioGateway,
-                                                                   ITipoUsuarioGateway tipoUsuarioGateway) {
-        return AlterarTipoDoUsuarioUseCase.create(usuarioGateway, tipoUsuarioGateway);
+                                                                    ITipoUsuarioGateway tipoUsuarioGateway,
+                                                                    IRestauranteGateway restauranteGateway) {
+        return AlterarTipoDoUsuarioUseCase.create(usuarioGateway, tipoUsuarioGateway, restauranteGateway);
     }
 
     @Bean
@@ -93,5 +100,32 @@ public class UseCaseConfig {
     @Bean
     public ExcluirRestauranteUseCase excluirRestauranteUseCase(IRestauranteGateway restauranteGateway) {
         return ExcluirRestauranteUseCase.create(restauranteGateway);
+    }
+
+    @Bean
+    public CadastrarItemCardapioUseCase cadastrarItemCardapioUseCase(IItemCardapioGateway itemCardapioGateway,
+                                                                      IRestauranteGateway restauranteGateway) {
+        return CadastrarItemCardapioUseCase.create(itemCardapioGateway, restauranteGateway);
+    }
+
+    @Bean
+    public ListarItensCardapioUseCase listarItensCardapioUseCase(IItemCardapioGateway itemCardapioGateway) {
+        return ListarItensCardapioUseCase.create(itemCardapioGateway);
+    }
+
+    @Bean
+    public BuscarItemCardapioPorIdUseCase buscarItemCardapioPorIdUseCase(IItemCardapioGateway itemCardapioGateway) {
+        return BuscarItemCardapioPorIdUseCase.create(itemCardapioGateway);
+    }
+
+    @Bean
+    public AtualizarItemCardapioUseCase atualizarItemCardapioUseCase(IItemCardapioGateway itemCardapioGateway,
+                                                                      IRestauranteGateway restauranteGateway) {
+        return AtualizarItemCardapioUseCase.create(itemCardapioGateway, restauranteGateway);
+    }
+
+    @Bean
+    public ExcluirItemCardapioUseCase excluirItemCardapioUseCase(IItemCardapioGateway itemCardapioGateway) {
+        return ExcluirItemCardapioUseCase.create(itemCardapioGateway);
     }
 }

@@ -2,11 +2,14 @@ package br.com.fiap.horadoprato.horadoprato.domain.usecase.restaurante;
 
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Restaurante;
 import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteNaoEncontradoException;
+import br.com.fiap.horadoprato.horadoprato.exceptions.UsuarioNaoEhDonoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
 
 public class AtualizarRestauranteUseCase {
+
+    private static final String TIPO_DONO_RESTAURANTE = "DONO_RESTAURANTE";
 
     private final IRestauranteGateway iRestauranteGateway;
 
@@ -25,7 +28,7 @@ public class AtualizarRestauranteUseCase {
 
     public Restaurante run(String id, String nomeRestaurante, String endereco, String tipoCozinha,
                            String horarioFuncionamento, String donoId)
-            throws RestauranteNaoEncontradoException, UsuarioNaoEncontradoException {
+            throws RestauranteNaoEncontradoException, UsuarioNaoEncontradoException, UsuarioNaoEhDonoException {
 
         final Restaurante restaurante = iRestauranteGateway.buscarPorId(id);
 
@@ -33,8 +36,14 @@ public class AtualizarRestauranteUseCase {
             throw new RestauranteNaoEncontradoException("Restaurante com id " + id + " nao encontrado");
         }
 
-        if (iUsuarioGateway.buscarPorId(donoId) == null) {
+        final var dono = iUsuarioGateway.buscarPorId(donoId);
+
+        if (dono == null) {
             throw new UsuarioNaoEncontradoException("Usuario dono com id " + donoId + " nao encontrado");
+        }
+
+        if (dono.getTipoUsuario() == null || !TIPO_DONO_RESTAURANTE.equals(dono.getTipoUsuario().getTpUsuario())) {
+            throw new UsuarioNaoEhDonoException("Usuario com id " + donoId + " nao possui perfil de dono de restaurante");
         }
 
         restaurante.setNomeRestaurante(nomeRestaurante);

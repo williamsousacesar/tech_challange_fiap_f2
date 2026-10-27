@@ -2,7 +2,8 @@ package br.com.fiap.horadoprato.horadoprato.interfaces.tipoUsuario;
 
 import br.com.fiap.horadoprato.horadoprato.domain.entities.TipoUsuario;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ITipoUsuarioGateway {
 
@@ -12,7 +13,7 @@ public interface ITipoUsuarioGateway {
 
     TipoUsuario buscarPorId(Long id);
 
-    List<TipoUsuario> listarTodos();
+    Page<TipoUsuario> listarTodos(Pageable pageable);
 
     TipoUsuario atualizar(TipoUsuario tipoUsuario);
 

@@ -3,7 +3,8 @@ package br.com.fiap.horadoprato.horadoprato.domain.usecase.usuario;
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Usuario;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class ListarUsuariosUseCase {
 
@@ -17,7 +18,7 @@ public class ListarUsuariosUseCase {
         return new ListarUsuariosUseCase(iUsuarioGateway);
     }
 
-    public List<Usuario> run() {
-        return iUsuarioGateway.listarTodos();
+    public Page<Usuario> run(Pageable pageable) {
+        return iUsuarioGateway.listarTodos(pageable);
     }
 }
