@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Serviço do Banco de Dados
   db:
@@ -15,6 +13,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
     networks:
       - rede_comunicacao
 
@@ -26,8 +30,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
+      - SPRING_PROFILES_ACTIVE=docker
       - DB_URL=jdbc:mysql://db:3306/meu_banco?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - DB_USER=java_user
       - DB_PASSWORD=javapassword
