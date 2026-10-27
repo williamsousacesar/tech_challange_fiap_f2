@@ -45,7 +45,7 @@ O sistema permite:
 - Spring Data JPA
 - Hibernate ORM
 - MySQL
-- H2 Database (para testes)
+- H2 Database (execução local e testes)
 - Maven
 - Docker / Docker Compose
 - SpringDoc OpenAPI
@@ -75,6 +75,7 @@ src/
 │   │       └── HoradopratoApplication.java
 │   └── resources/
 │       ├── application.yaml
+│       ├── application-docker.yaml
 │       └── data.sql
 └── test/
     └── java/
@@ -133,10 +134,14 @@ Antes de iniciar, certifique-se de ter instalado:
 
 ### Executar localmente com Maven
 
+Usa o banco **H2 em memória**, sem necessidade de Docker ou MySQL.
+
 ```bash
 ./mvnw clean install
 ./mvnw spring-boot:run
 ```
+
+No Windows (PowerShell), use `.\mvnw.cmd` no lugar de `./mvnw`.
 
 A aplicação ficará disponível em:
 
@@ -144,43 +149,80 @@ A aplicação ficará disponível em:
 http://localhost:8080
 ```
 
+Os dados ficam apenas em memória: a cada reinício o banco é recriado e recarregado com os dados iniciais do `data.sql`.
+
+Console do H2 (para consultar as tabelas):
+
+| Campo | Valor |
+|---|---|
+| URL | `http://localhost:8080/h2-console` |
+| JDBC URL | `jdbc:h2:mem:testdb` |
+| Usuário | `sa` |
+| Senha | *(em branco)* |
+
 ### Executar com Docker
 
-No diretório raiz do projeto:
+Sobe a aplicação e um banco **MySQL 8**. No diretório raiz do projeto:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
-Para encerrar os containers:
+A aplicação só inicia depois que o MySQL estiver pronto (healthcheck) e fica disponível em `http://localhost:8080`. Os dados ficam salvos no volume `mysql_data` e são mantidos entre reinícios.
+
+Para encerrar os containers (mantendo os dados):
 
 ```bash
-docker-compose down
+docker compose down
+```
+
+Para encerrar e apagar os dados do banco:
+
+```bash
+docker compose down -v
 ```
 
 ## Configuração do banco
 
-A configuração do banco está em:
+A aplicação usa perfis do Spring para escolher o banco:
 
-```text
-src/main/resources/application.yaml
-```
+| Perfil | Arquivo | Banco | Quando é usado |
+|---|---|---|---|
+| padrão | `src/main/resources/application.yaml` | H2 em memória | Execução local (`mvnw` ou IDE) |
+| `docker` | `src/main/resources/application-docker.yaml` | MySQL 8 | `docker compose`, que ativa o perfil com `SPRING_PROFILES_ACTIVE=docker` |
+| testes | `src/test/resources/application.yaml` | H2 em memória | `mvnw test` |
 
-Exemplo:
+No perfil `docker`, a conexão é lida das variáveis de ambiente definidas no `docker-compose.yml`:
 
-```yaml
-spring:
-  application:
-    name: horadoprato
-  datasource:
-    url: jdbc:mysql://db:3306/meu_banco?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: java_user
-    password: javapassword
-  jpa:
-    hibernate:
-      ddl-auto: update
-```
+| Variável | Descrição |
+|---|---|
+| `DB_URL` | URL JDBC do MySQL (`jdbc:mysql://db:3306/meu_banco?...`) |
+| `DB_USER` | Usuário do banco |
+| `DB_PASSWORD` | Senha do banco |
+
+### Dados iniciais
+
+O arquivo `src/main/resources/data.sql` é executado a cada inicialização, no H2 e no MySQL. Os comandos só inserem registros que ainda não existem, então reiniciar a aplicação não duplica dados.
+
+Tipos de usuário:
+
+| ID | Tipo |
+|---|---|
+| 1 | `DONO_RESTAURANTE` |
+| 2 | `CLIENTE` |
+
+Usuários:
+
+| ID | Nome | Tipo |
+|---|---|---|
+| `550e8400-e29b-41d4-a716-446655440000` | Carlos Oliveira | `DONO_RESTAURANTE` |
+| `550e8400-e29b-41d4-a716-446655440001` | Mariana Silva | `CLIENTE` |
+| `550e8400-e29b-41d4-a716-446655440002` | Herson Noronha Marinho | `CLIENTE` |
+| `550e8400-e29b-41d4-a716-446655440003` | Cleber Miranda | `CLIENTE` |
+| `550e8400-e29b-41d4-a716-446655440004` | Henrique Arraes | `CLIENTE` |
+| `550e8400-e29b-41d4-a716-446655440005` | William Cesar | `CLIENTE` |
+
+Para cadastrar um restaurante, use como `donoId` um usuário do tipo `DONO_RESTAURANTE` (ex.: Carlos Oliveira).
 
 ## Endpoints
 
