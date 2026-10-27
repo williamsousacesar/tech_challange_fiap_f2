@@ -5,8 +5,14 @@ import br.com.fiap.horadoprato.horadoprato.domain.entities.TipoUsuario;
 import br.com.fiap.horadoprato.horadoprato.domain.entities.Usuario;
 import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.UsuarioNaoEhDonoException;
+import br.com.fiap.horadoprato.horadoprato.interfaces.itemCardapio.IItemCardapioGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.restaurante.IRestauranteGateway;
 import br.com.fiap.horadoprato.horadoprato.interfaces.usuario.IUsuarioGateway;
+import org.junit.jupiter.api.Assumptions;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -33,6 +39,9 @@ class RestauranteUseCaseTest {
 
     @Mock
     private IUsuarioGateway usuarioGateway;
+
+    @Mock
+    private IItemCardapioGateway itemCardapioGateway;
 
     @Test
     void cadastrarDeveCadastrarQuandoUsuarioEhDono() {
@@ -126,9 +135,10 @@ class RestauranteUseCaseTest {
 
     @Test
     void excluirDeveExcluirQuandoExiste() {
-        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(restauranteGateway);
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(restauranteGateway, itemCardapioGateway);
 
         when(restauranteGateway.buscarPorId("r1")).thenReturn(restaurante("r1", usuario("u1", tipoUsuario(1L, "DONO_RESTAURANTE", "Dono"))));
+        when(itemCardapioGateway.existeItemComRestaurante("r1")).thenReturn(false);
 
         assertDoesNotThrow(() -> useCase.run("r1"));
         verify(restauranteGateway).excluir("r1");
@@ -136,11 +146,21 @@ class RestauranteUseCaseTest {
 
     @Test
     void excluirDeveLancarQuandoNaoExiste() {
-        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(restauranteGateway);
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(restauranteGateway, itemCardapioGateway);
 
         when(restauranteGateway.buscarPorId("r9")).thenReturn(null);
 
         assertThrows(RestauranteNaoEncontradoException.class, () -> useCase.run("r9"));
+    }
+
+    @Test
+    void excluirDeveLancarQuandoRestauranteTemItensNoCardapio() {
+        ExcluirRestauranteUseCase useCase = ExcluirRestauranteUseCase.create(restauranteGateway, itemCardapioGateway);
+
+        when(restauranteGateway.buscarPorId("r1")).thenReturn(restaurante("r1", usuario("u1", tipoUsuario(1L, "DONO_RESTAURANTE", "Dono"))));
+        when(itemCardapioGateway.existeItemComRestaurante("r1")).thenReturn(true);
+
+        assertThrows(RuntimeException.class, () -> useCase.run("r1"));
     }
 
     private static TipoUsuario tipoUsuario(Long id, String tpUsuario, String descricao) {

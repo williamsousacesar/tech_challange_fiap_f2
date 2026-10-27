@@ -84,4 +84,11 @@ class RestauranteControllerTest {
 
         assertEquals("Bistro", dto.nomeRestaurante());
     }
+
+    @Test
+    void deveExcluirRestaurante() {
+        RestauranteController controller = new RestauranteController(cadastrarRestauranteUseCase, listarRestaurantesUseCase, buscarRestaurantePorIdUseCase, atualizarRestauranteUseCase, excluirRestauranteUseCase);
+
+        controller.excluir("r1");
+    }
 }

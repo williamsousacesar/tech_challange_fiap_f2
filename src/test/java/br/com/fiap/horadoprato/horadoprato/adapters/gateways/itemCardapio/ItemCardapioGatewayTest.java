@@ -79,4 +79,12 @@ class ItemCardapioGatewayTest {
 
         assertEquals("Risoto", result.getNomeItemCardapio());
     }
+
+    @Test
+    void deveVerificarSeExisteItemComRestaurante() {
+        ItemCardapioGateway gateway = new ItemCardapioGateway(dataStorageSource);
+        when(dataStorageSource.existeItemComRestaurante("r1")).thenReturn(true);
+
+        assertEquals(true, gateway.existeItemComRestaurante("r1"));
+    }
 }

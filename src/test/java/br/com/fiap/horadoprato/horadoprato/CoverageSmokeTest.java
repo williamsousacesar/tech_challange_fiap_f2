@@ -151,9 +151,9 @@ class CoverageSmokeTest {
         assertNotNull(config.listarRestaurantesUseCase(restauranteGateway));
         assertNotNull(config.buscarRestaurantePorIdUseCase(restauranteGateway));
         assertNotNull(config.atualizarRestauranteUseCase(restauranteGateway, usuarioGateway));
-        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway));
-        assertNotNull(config.cadastrarItemCardapioUseCase(itemGateway, restauranteGateway));
-        assertNotNull(config.listarItensCardapioUseCase(itemGateway));
+        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway, itemGateway));
+
+        assertNotNull(config.cadastrarItemCardapioUseCase(itemGateway, restauranteGateway));        assertNotNull(config.listarItensCardapioUseCase(itemGateway));
         assertNotNull(config.buscarItemCardapioPorIdUseCase(itemGateway));
         assertNotNull(config.atualizarItemCardapioUseCase(itemGateway, restauranteGateway));
         assertNotNull(config.excluirItemCardapioUseCase(itemGateway));

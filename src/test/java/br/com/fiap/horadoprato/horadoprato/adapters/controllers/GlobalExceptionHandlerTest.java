@@ -31,6 +31,15 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void deveTratarConflitoRestauranteComItensNoCardapio() {
+        ProblemDetail detail = handler.tratarConflito(new RestauranteComItensCardapioException("Restaurante com id r1 possui itens no cardapio e nao pode ser excluido"));
+
+        assertEquals(409, detail.getStatus());
+        assertEquals("Conflito", detail.getTitle());
+        assertEquals("Restaurante com id r1 possui itens no cardapio e nao pode ser excluido", detail.getDetail());
+    }
+
+    @Test
     void deveTratarValidacao() {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(new DummyForm(), "dummy");
         bindingResult.addError(new FieldError("dummy", "nome", "obrigatorio"));

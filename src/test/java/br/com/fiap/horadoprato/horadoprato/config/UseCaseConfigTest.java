@@ -37,7 +37,7 @@ class UseCaseConfigTest {
         assertNotNull(config.listarRestaurantesUseCase(restauranteGateway));
         assertNotNull(config.buscarRestaurantePorIdUseCase(restauranteGateway));
         assertNotNull(config.atualizarRestauranteUseCase(restauranteGateway, usuarioGateway));
-        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway));
+        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway, itemCardapioGateway));
 
         assertNotNull(config.cadastrarItemCardapioUseCase(itemCardapioGateway, restauranteGateway));
         assertNotNull(config.listarItensCardapioUseCase(itemCardapioGateway));
