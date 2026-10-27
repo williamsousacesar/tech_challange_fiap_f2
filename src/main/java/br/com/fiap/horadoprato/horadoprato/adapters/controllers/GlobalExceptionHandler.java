@@ -1,5 +1,6 @@
 package br.com.fiap.horadoprato.horadoprato.adapters.controllers;
 
+import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteComItensCardapioException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.UsuarioComRestauranteNaoPodeAlterarTipoException;
 import br.com.fiap.horadoprato.horadoprato.exceptions.UsuarioNaoEhDonoException;
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
         return criarProblema(HttpStatus.NOT_FOUND, "Recurso nao encontrado", e.getMessage());
     }
 
-    @ExceptionHandler({TipoUsuarioJaExisteException.class, TipoUsuarioEmUsoException.class, UsuarioNaoEhDonoException.class, UsuarioComRestauranteNaoPodeAlterarTipoException.class})
+    @ExceptionHandler({TipoUsuarioJaExisteException.class, TipoUsuarioEmUsoException.class, UsuarioNaoEhDonoException.class, UsuarioComRestauranteNaoPodeAlterarTipoException.class, RestauranteComItensCardapioException.class})
     public ProblemDetail tratarConflito(RuntimeException e) {
         return criarProblema(HttpStatus.CONFLICT, "Conflito", e.getMessage());
     }

@@ -22,4 +22,6 @@ public interface ItemCardapioRepository extends JpaRepository<ItemCardapioEntity
 
     @EntityGraph(attributePaths = "restaurante")
     Page<ItemCardapioEntity> findByRestauranteId(String restauranteId, Pageable pageable);
+
+    boolean existsByRestauranteId(String restauranteId);
 }

@@ -86,6 +86,12 @@ public class ItemCardapioDataStorage implements IItemCardapioDataStorageSource {
         repository.deleteById(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existeItemComRestaurante(String restauranteId) {
+        return repository.existsByRestauranteId(restauranteId);
+    }
+
     private static ItemCardapioDTO toDTO(ItemCardapioEntity entity) {
         return new ItemCardapioDTO(
                 entity.getIdItemCardapio(),

@@ -16,4 +16,6 @@ public interface IItemCardapioGateway {
     ItemCardapio atualizar(ItemCardapio itemCardapio);
 
     void excluir(String id);
+
+    boolean existeItemComRestaurante(String restauranteId);
 }
