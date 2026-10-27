@@ -96,6 +96,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -237,6 +238,8 @@ class CoverageBoostTests {
         when(itemStorage.buscarPorId("i1")).thenReturn(itemDto);
         when(itemStorage.listarTodos(eq("r1"), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(itemDto)));
         when(itemStorage.atualizarItemCardapio(eq("i1"), any())).thenReturn(itemDto);
+        when(itemStorage.existeItemComRestaurante("r1")).thenReturn(true);
+        assertTrue(itemGateway.existeItemComRestaurante("r1"));
         assertEquals("i1", itemGateway.incluir(ItemCardapio.builder().nomeItemCardapio("Pizza").descricaoItem("Desc").preco(new BigDecimal("15.00")).apenasNoLocal(false).caminhoFoto("/img.png").restaurante(Restaurante.builder().id("r1").build()).build()).getIdItemCardapio());
         assertEquals("i1", itemGateway.buscarPorId("i1").getIdItemCardapio());
         assertEquals(1, itemGateway.listarTodos("r1", Pageable.unpaged()).getTotalElements());
@@ -307,6 +310,8 @@ class CoverageBoostTests {
         assertEquals(1, itemStorage.listarTodos("r1", Pageable.unpaged()).getTotalElements());
         assertEquals("i1", itemStorage.atualizarItemCardapio("i1", new NovoItemCardapioDTO("P2", "D2", new BigDecimal("12.00"), false, "/p2.png", "r1")).idItemCardapio());
         assertDoesNotThrow(() -> itemStorage.excluirItemCardapio("i1"));
+        when(itemRepository.existsByRestauranteId("r1")).thenReturn(true);
+        assertTrue(itemStorage.existeItemComRestaurante("r1"));
     }
 
     @Test
@@ -349,7 +354,7 @@ class CoverageBoostTests {
         assertNotNull(config.listarRestaurantesUseCase(restauranteGateway));
         assertNotNull(config.buscarRestaurantePorIdUseCase(restauranteGateway));
         assertNotNull(config.atualizarRestauranteUseCase(restauranteGateway, usuarioGateway));
-        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway));
+        assertNotNull(config.excluirRestauranteUseCase(restauranteGateway, itemCardapioGateway));
         assertNotNull(config.cadastrarItemCardapioUseCase(itemCardapioGateway, restauranteGateway));
         assertNotNull(config.listarItensCardapioUseCase(itemCardapioGateway));
         assertNotNull(config.buscarItemCardapioPorIdUseCase(itemCardapioGateway));

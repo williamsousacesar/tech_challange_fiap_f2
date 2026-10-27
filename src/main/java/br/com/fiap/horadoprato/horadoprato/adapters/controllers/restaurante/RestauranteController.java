@@ -107,6 +107,7 @@ public class RestauranteController {
     @Operation(summary = "Exclui um restaurante")
     @ApiResponse(responseCode = "204", description = "Restaurante excluido")
     @ApiResponse(responseCode = "404", description = "Restaurante nao encontrado", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
+    @ApiResponse(responseCode = "409", description = "Restaurante possui itens no cardapio", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public void excluir(@PathVariable String id) {
         excluirRestauranteUseCase.run(id);
     }

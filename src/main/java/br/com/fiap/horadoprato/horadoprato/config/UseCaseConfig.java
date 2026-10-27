@@ -98,8 +98,9 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public ExcluirRestauranteUseCase excluirRestauranteUseCase(IRestauranteGateway restauranteGateway) {
-        return ExcluirRestauranteUseCase.create(restauranteGateway);
+    public ExcluirRestauranteUseCase excluirRestauranteUseCase(IRestauranteGateway restauranteGateway,
+                                                               IItemCardapioGateway itemCardapioGateway) {
+        return ExcluirRestauranteUseCase.create(restauranteGateway, itemCardapioGateway);
     }
 
     @Bean
